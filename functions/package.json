@@ -1,34 +1,46 @@
 {
-  "name": "functions",
-  "scripts": {
-    "lint": "tslint --project tsconfig.json",
-    "build": "tsc",
-    "serve": "npm run build && firebase serve --only functions",
-    "shell": "npm run build && firebase functions:shell",
-    "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
-  },
-  "engines": {
-    "node": "8"
-  },
-  "main": "lib/index.js",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "firebase-admin": "^8.6.1",
-    "firebase-functions": "^3.3.0",
-    "nodemailer": "^6.3.1"
-  },
-  "devDependencies": {
-    "@types/body-parser": "^1.17.1",
-    "@types/cors": "^2.8.6",
-    "@types/express": "^4.17.1",
-    "@types/node": "^12.11.1",
-    "@types/nodemailer": "^6.2.1",
-    "tslint": "^5.12.0",
-    "typescript": "^3.2.2"
-  },
-  "private": true
+	"name": "functions",
+	"scripts": {
+		"lint": "tslint --project tsconfig.json",
+		"build": "tsc",
+		"serve": "npm run build && firebase serve --only functions",
+		"shell": "npm run build && firebase functions:shell",
+		"start": "npm run shell",
+		"deploy": "firebase deploy --only functions",
+		"logs": "firebase functions:log",
+		"firebase": "./node_modules/.bin/firebase",
+		"local": "npm run firebase -- experimental:functions:shell",
+		"functions:emulator": "./node_modules/.bin/functions-emulator",
+		"emulator:start": "npm run functions:emulator -- start",
+		"emulator:stop": "npm run functions:emulator -- stop",
+		"emulator": "npm run functions:emulator"
+	},
+	"engines": {
+		"node": "8"
+	},
+	"main": "lib/index.js",
+	"dependencies": {
+		"await-busboy": "^1.0.3",
+		"body-parser": "^1.19.0",
+		"busboy": "^0.3.1",
+		"cors": "^2.8.5",
+		"express": "^4.17.1",
+		"firebase-admin": "^8.6.1",
+		"firebase-functions": "^3.3.0",
+		"fs": "0.0.1-security",
+		"nodemailer": "^6.3.1",
+		"os": "^0.1.1"
+	},
+	"devDependencies": {
+		"@types/body-parser": "^1.17.1",
+		"@types/busboy": "^0.2.3",
+		"@types/cors": "^2.8.6",
+		"@types/express": "^4.17.1",
+		"@types/express-fileupload": "^1.1.0",
+		"@types/node": "^12.11.1",
+		"@types/nodemailer": "^6.2.1",
+		"tslint": "^5.12.0",
+		"typescript": "^3.2.2"
+	},
+	"private": true
 }

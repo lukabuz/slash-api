@@ -1,9 +1,14 @@
 import * as functions from "firebase-functions";
-import * as nodemailer from "nodemailer";
+import * as admin from "firebase-admin";
 import * as express from "express";
 import * as cors from "cors";
 import * as parser from "body-parser";
-// import { app } from "firebase-admin";
+import * as nodemailer from "nodemailer";
+import { Validator } from "./validator";
+import Data from "./data";
+
+// middleware initialization
+// _______________________________
 
 // function for determining if a body is a json string
 const isJsonString = (str: any): boolean => {
@@ -23,70 +28,8 @@ const parsingMiddleware = (req: any, res: any, next: any) => {
 	next();
 };
 
-// interface for validator configuration
-interface validationConfig {
-	variableName: string; // name of variable in http request
-	displayName: string; // what the variable should be reffered to as in errors
-	minLength: number; // minimum length of the value
-	maxLength: number; // maximum length of the value
-}
-
-// Validator class, handles http request body validation
-class Validator {
-	private configs: validationConfig[]; // array for configs of each expected variable
-	private body: any; // req.body
-	public errors: string[]; // array of errors found in req.body
-
-	// constructor, takes an array of configs and a req.body
-	constructor(configs: validationConfig[], body: any) {
-		this.configs = configs;
-		this.errors = [];
-		this.body = body;
-	}
-
-	// the validate method. First checks if all variables ar present, then checks their size
-	// if this returns false, this.errors.length > 0
-	public validate(): boolean {
-		return this.checkExistence() && this.checkLength();
-	}
-
-	// check if all variables in the config exist
-	private checkExistence(): boolean {
-		for (const config of this.configs) {
-			if (typeof this.body[config.variableName] === "undefined") {
-				this.errors.push("გთხოვთ შეიყვანოთ " + config.displayName); // push to errors array
-			}
-		}
-		return this.errors.length === 0;
-	}
-
-	// check lengths of all variables
-	private checkLength(): boolean {
-		for (const config of this.configs) {
-			if (this.body[config.variableName].length > config.maxLength) {
-				// check for max
-				this.errors.push(
-					config.displayName +
-						" უნდა იყოს მაქსიმუმ " +
-						config.maxLength +
-						" სიმბოლო"
-				);
-			}
-			if (this.body[config.variableName].length < config.minLength) {
-				// check for min
-				this.errors.push(
-					config.displayName +
-						" უნდა იყოს მინიმუმ " +
-						config.minLength +
-						" სიმბოლო"
-				);
-			}
-		}
-		return this.errors.length === 0;
-	}
-}
-
-// Mailer class, handles email sending
+// mailer class definition
+// _______________________________
 class Mailer {
 	private transporter: any; // nodemailer transporter object
 	private user: string; // username(example@example.org) of sending account
@@ -136,6 +79,9 @@ class Mailer {
 	}
 }
 
+// express initialization
+// _______________________________
+
 // initialize express, set cors, and handle body parsing
 const api = express();
 api.use(cors({ origin: true }));
@@ -143,7 +89,9 @@ api.use(parser.urlencoded({ extended: false }));
 api.use(parser.json());
 api.use(parsingMiddleware);
 
-// email account configuration from firebase
+// mailer initialization
+// _______________________________
+
 const mailConfig = {
 	host: functions.config().email.host,
 	port: +functions.config().email.port, //typecast to number
@@ -154,17 +102,27 @@ const mailConfig = {
 	}
 };
 
-//initialize mailer
 const mailer = new Mailer(
 	mailConfig.host,
-	mailConfig.port,
-	mailConfig.secure,
+	+mailConfig.port,
+	+mailConfig.port === 465,
 	mailConfig.auth.user,
 	mailConfig.auth.pass
 );
 
+// database initialization
+// _______________________________
+
+admin.initializeApp();
+const realtimeDatabase = admin.database();
+const database = new Data(realtimeDatabase);
+
+// routes
+// _______________________________
+
 // route for requesting a price quote from the website
 api.post("/requestQuote", async (req: any, res: any) => {
+	const lang = req.body.lang === "en" ? "en" : "ge";
 	// initialize validator with the proper configs
 	const validator = new Validator(
 		[
@@ -181,7 +139,8 @@ api.post("/requestQuote", async (req: any, res: any) => {
 				maxLength: 1000
 			}
 		],
-		req.body
+		req,
+		lang
 	);
 
 	// handle validator errors
@@ -194,7 +153,7 @@ api.post("/requestQuote", async (req: any, res: any) => {
 	const text = "From: " + req.body.email + "\n" + req.body.text;
 
 	mailer
-		.send(mailConfig.auth.user, text, req.body.email + " - Quote")
+		.send(functions.config().email.auth, text, req.body.email + " - Quote")
 		.then((message: any) => {
 			res.send(JSON.stringify({ status: "success", message: message }));
 		})
@@ -205,6 +164,7 @@ api.post("/requestQuote", async (req: any, res: any) => {
 
 // route for handling the contact form
 api.post("/contact", async (req: any, res: any) => {
+	const lang = req.body.lang === "en" ? "en" : "ge";
 	// initialize validator with the proper configs
 	const validator = new Validator(
 		[
@@ -221,7 +181,8 @@ api.post("/contact", async (req: any, res: any) => {
 				maxLength: 1000
 			}
 		],
-		req.body
+		req,
+		lang
 	);
 
 	// handle validation errors
@@ -234,13 +195,82 @@ api.post("/contact", async (req: any, res: any) => {
 	const text = "From: " + req.body.email + "\n" + req.body.text;
 
 	mailer
-		.send(mailConfig.auth.user, text, req.body.email + " - Contact")
+		.send(functions.config().email.auth, text, req.body.email + " - Contact")
 		.then((message: any) => {
 			res.send(JSON.stringify({ status: "success", message: message }));
 		})
 		.catch((e: any) => {
 			res.send(JSON.stringify({ status: "error", errors: [e] }));
 		});
+});
+
+// route for handling the contact form
+api.post("/createPortfolioItem", async (req: any, res: any) => {
+	const lang = req.body.lang === "en" ? "en" : "ge";
+	// initialize validator with the proper configs
+	const validator = new Validator(
+		[
+			{
+				variableName: "name",
+				displayName: "სახელი",
+				minLength: 1,
+				maxLength: 50
+			},
+			{
+				variableName: "longDescription",
+				displayName: "ვრცელი აღწერა",
+				minLength: 10,
+				maxLength: 200000
+			},
+			{
+				variableName: "shortDescription",
+				displayName: "მოკლე აღწერა",
+				minLength: 10,
+				maxLength: 200
+			},
+			{
+				variableName: "logoImage",
+				displayName: "ლოგოს სურათი",
+				minLength: 10,
+				maxLength: 200
+			},
+			{
+				variableName: "thumbnailImage",
+				displayName: "thumbnail სურათი",
+				minLength: 10,
+				maxLength: 200
+			},
+			{
+				variableName: "images",
+				displayName: "სურათი",
+				minLength: 10,
+				maxLength: 200
+			}
+		],
+		req,
+		lang
+	);
+
+	// handle validation errors
+	if (!validator.validate()) {
+		res.json({ status: "error", errors: validator.errors });
+		return;
+	}
+
+	const uploaded = database.createPortfolioItem(
+		req.body.name,
+		req.body.shortDescription,
+		req.body.longDescription,
+		req.body.logoImage,
+		req.body.thumbnailImage,
+		req.body.stackImages || [],
+		req.body.images
+	);
+	if (uploaded) {
+		res.json({ status: "success", message: "Files uploaded." });
+	} else {
+		res.json({ status: "error", errors: "Couldn't upload files." });
+	}
 });
 
 // export express app as /api/ function
