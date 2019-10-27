@@ -21,7 +21,7 @@ export class Validator {
 	private lang: Language;
 
 	// constructor, takes an array of configs and a req.body
-	constructor(configs: validationConfig[], req: any, lang: string = "ge") {
+	constructor(configs: validationConfig[], req: any, lang = "ge") {
 		if (lang === "en") {
 			this.lang = {
 				variableMissing: "Please enter",

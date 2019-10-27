@@ -7,6 +7,42 @@ import * as nodemailer from "nodemailer";
 import { Validator } from "./validator";
 import Data from "./data";
 
+const localizer = (str: string, lang = "ge"): string => {
+	const language = lang === "ge" ? "ge" : "en";
+	const translations = {
+		en: {
+			email: "email",
+			text: "main text",
+			siteType: "website type",
+			companyName: "company name",
+			subject: "subject",
+			name: "name",
+			longDescription: "long description",
+			shortDescription: "short description",
+			logoImage: "logo image",
+			thumbnailImage: "thumbnail image",
+			images: "images",
+			adminPass: "administrator password"
+		},
+		ge: {
+			email: "მეილი",
+			text: "მთავარი ტექსტი",
+			siteType: "საიტის ტიპი",
+			companyName: "კომპანიის სახელი",
+			subject: "სათაური",
+			name: "სახელი",
+			longDescription: "ვრცელი აღწერა",
+			shortDescription: "მოკლე აღწერა",
+			logoImage: "ლოგოს სურათი",
+			thumbnailImage: "პატარა სურათი",
+			images: "სურათები",
+			adminPass: "ადმინისტრატორის პაროლი"
+		}
+	};
+
+	return translations[language][str];
+};
+
 // middleware initialization
 // _______________________________
 
@@ -128,15 +164,27 @@ api.post("/requestQuote", async (req: any, res: any) => {
 		[
 			{
 				variableName: "email",
-				displayName: "მეილი",
+				displayName: localizer("email", lang),
 				minLength: 1,
 				maxLength: 50
 			},
 			{
 				variableName: "text",
-				displayName: "ტექსტი",
+				displayName: localizer("text", lang),
 				minLength: 10,
 				maxLength: 1000
+			},
+			{
+				variableName: "siteType",
+				displayName: localizer("siteType", lang),
+				minLength: 1,
+				maxLength: 100
+			},
+			{
+				variableName: "companyName",
+				displayName: localizer("companyName", lang),
+				minLength: 1,
+				maxLength: 100
 			}
 		],
 		req,
@@ -150,15 +198,15 @@ api.post("/requestQuote", async (req: any, res: any) => {
 	}
 
 	// prepare payload and send email
-	const text = "From: " + req.body.email + "\n" + req.body.text;
+	const text = `From: ${req.body.email} --- Site Type: ${req.body.siteType} --- Company: ${req.body.companyName} --- Site Description ${req.body.text}`;
 
 	mailer
 		.send(functions.config().email.auth, text, req.body.email + " - Quote")
 		.then((message: any) => {
-			res.send(JSON.stringify({ status: "success", message: message }));
+			res.send({ status: "success", message: message });
 		})
 		.catch((e: any) => {
-			res.send(JSON.stringify({ status: "error", errors: [e] }));
+			res.send({ status: "error", errors: [e] });
 		});
 });
 
@@ -170,15 +218,21 @@ api.post("/contact", async (req: any, res: any) => {
 		[
 			{
 				variableName: "email",
-				displayName: "მეილი",
+				displayName: localizer("email", lang),
 				minLength: 1,
 				maxLength: 50
 			},
 			{
 				variableName: "text",
-				displayName: "ტექსტი",
+				displayName: localizer("text", lang),
 				minLength: 10,
 				maxLength: 1000
+			},
+			{
+				variableName: "subject",
+				displayName: localizer("subject", lang),
+				minLength: 1,
+				maxLength: 100
 			}
 		],
 		req,
@@ -195,12 +249,16 @@ api.post("/contact", async (req: any, res: any) => {
 	const text = "From: " + req.body.email + "\n" + req.body.text;
 
 	mailer
-		.send(functions.config().email.auth, text, req.body.email + " - Contact")
+		.send(
+			functions.config().email.auth,
+			text,
+			`${req.body.email} - ${req.body.subject}`
+		)
 		.then((message: any) => {
-			res.send(JSON.stringify({ status: "success", message: message }));
+			res.send({ status: "success", message: message });
 		})
 		.catch((e: any) => {
-			res.send(JSON.stringify({ status: "error", errors: [e] }));
+			res.send({ status: "error", errors: [e] });
 		});
 });
 
@@ -212,38 +270,44 @@ api.post("/createPortfolioItem", async (req: any, res: any) => {
 		[
 			{
 				variableName: "name",
-				displayName: "სახელი",
+				displayName: localizer("name", lang),
 				minLength: 1,
 				maxLength: 50
 			},
 			{
 				variableName: "longDescription",
-				displayName: "ვრცელი აღწერა",
+				displayName: localizer("longDescription", lang),
 				minLength: 10,
 				maxLength: 200000
 			},
 			{
 				variableName: "shortDescription",
-				displayName: "მოკლე აღწერა",
+				displayName: localizer("shortDescription", lang),
 				minLength: 10,
 				maxLength: 200
 			},
 			{
 				variableName: "logoImage",
-				displayName: "ლოგოს სურათი",
+				displayName: localizer("logoImage", lang),
 				minLength: 10,
 				maxLength: 200
 			},
 			{
 				variableName: "thumbnailImage",
-				displayName: "thumbnail სურათი",
+				displayName: localizer("thumbnailImage", lang),
 				minLength: 10,
 				maxLength: 200
 			},
 			{
 				variableName: "images",
-				displayName: "სურათი",
+				displayName: localizer("images", lang),
 				minLength: 10,
+				maxLength: 200
+			},
+			{
+				variableName: "adminPass",
+				displayName: localizer("adminPass", lang),
+				minLength: 1,
 				maxLength: 200
 			}
 		],
@@ -257,6 +321,11 @@ api.post("/createPortfolioItem", async (req: any, res: any) => {
 		return;
 	}
 
+	if (req.body.adminPass !== functions.config().email.auth) {
+		res.json({ status: "error", errors: ["wrong administrator password"] });
+		return;
+	}
+
 	const uploaded = database.createPortfolioItem(
 		req.body.name,
 		req.body.shortDescription,
@@ -264,7 +333,8 @@ api.post("/createPortfolioItem", async (req: any, res: any) => {
 		req.body.logoImage,
 		req.body.thumbnailImage,
 		req.body.stackImages || [],
-		req.body.images
+		req.body.images,
+		lang
 	);
 	if (uploaded) {
 		res.json({ status: "success", message: "Files uploaded." });

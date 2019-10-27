@@ -12,13 +12,17 @@ export default class Database {
 		logoImage: string,
 		thumbnailImage: string,
 		stackImages: string[],
-		images: string[]
+		images: string[],
+		lang = "ge"
 	): boolean {
 		try {
 			const stack = this.arrayToDictionary(stackImages);
 			const mainImages = this.arrayToDictionary(images);
+			const langRef = lang !== "ge" ? "en" : "ge";
+
 			this.ref
 				.child("portfolio_items")
+				.child(langRef)
 				.child(name)
 				.set({
 					name: name,
@@ -36,26 +40,10 @@ export default class Database {
 	}
 
 	arrayToDictionary(array: any) {
-		let i = 0;
-		let result = {};
-		for (i; i < array.length; i++) {
+		const result = {};
+		for (let i = 0; i < array.length; i++) {
 			result[i.toString()] = array[i];
 		}
 		return result;
 	}
-
-	// getUserInfo(username: string) {
-	// 	return new Promise((resolve: any, reject: any) => {
-	// 		this.ref
-	// 			.child("users")
-	// 			.child(username)
-	// 			.on("value", function(snapshot: any) {
-	// 				const user = snapshot.val();
-	// 				if (user === null) {
-	// 					reject(new Error("User does not exist."));
-	// 				}
-	// 				resolve(user);
-	// 			});
-	// 	});
-	// }
 }
