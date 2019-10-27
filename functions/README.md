@@ -30,11 +30,11 @@ Request a price quote for a webiste. Sends email to info@slash.ge.
 > 
 > |Key|Value|Type|Description|
 > |---|---|---|---|
-> |email|example@example.org|text|min: 1 | max: 50|
-> |text|just some sample text to test out the api.|text|min: 1 | max: 1000|
+> |email|example@example.org|text|min: 1 , max: 50|
+> |text|just some sample text to test out the api.|text|min: 1 , max: 1000|
 > |lang|en|text|Language, defaults to 'ge'. Other option is 'en'|
-> |companyName|Just a sample company|text|min: 1 | max: 100|
-> |siteType|Just a normal website|text|min: 1 | max: 100|
+> |companyName|Just a sample company|text|min: 1 , max: 100|
+> |siteType|Just a normal website|text|min: 1 , max: 100|
 > 
 
 ### Examples:
@@ -61,11 +61,11 @@ Request a price quote for a webiste. Sends email to info@slash.ge.
 > > > 
 > > > |Key|Value|Type|Description|
 > > > |---|---|---|---|
-> > > |email|example@example.org|text|min: 1 | max: 50|
-> > > |text|just some sample text to test out the api.|text|min: 1 | max: 1000|
+> > > |email|example@example.org|text|min: 1 , max: 50|
+> > > |text|just some sample text to test out the api.|text|min: 1 , max: 1000|
 > > > |lang|en|text|Language, defaults to 'ge'. Other option is 'en'|
-> > > |companyName|Just a sample company|text|min: 1 | max: 100|
-> > > |siteType|Just a normal website|text|min: 1 | max: 100|
+> > > |companyName|Just a sample company|text|min: 1 , max: 100|
+> > > |siteType|Just a normal website|text|min: 1 , max: 100|
 > > > 
 > > 
 > > ----------------
@@ -107,11 +107,11 @@ Request a price quote for a webiste. Sends email to info@slash.ge.
 > > > 
 > > > |Key|Value|Type|Description|
 > > > |---|---|---|---|
-> > > |email|example@example.org|text|min: 1 | max: 50|
-> > > |text|just some sample text to test out the api.|text|min: 1 | max: 1000|
+> > > |email|example@example.org|text|min: 1 , max: 50|
+> > > |text|just some sample text to test out the api.|text|min: 1 , max: 1000|
 > > > |lang|ge|text|Language, defaults to 'ge'. Other option is 'en'|
-> > > |companyName|Just a sample company|text|min: 1 | max: 100|
-> > > |siteType|Just a normal website|text|min: 1 | max: 100|
+> > > |companyName|Just a sample company|text|min: 1 , max: 100|
+> > > |siteType|Just a normal website|text|min: 1 , max: 100|
 > > > 
 > > 
 > > ----------------
@@ -157,9 +157,9 @@ Contact form route. Sends email to info@slash.ge.
 > 
 > |Key|Value|Type|Description|
 > |---|---|---|---|
-> |email|example@example.org|text|min: 1 | max: 50|
-> |subject|Test subject line|text|min: 1 | max: 100|
-> |text|just some sample text to test out the api.|text|min: 1 | max: 1000|
+> |email|example@example.org|text|min: 1 , max: 50|
+> |subject|Test subject line|text|min: 1 , max: 100|
+> |text|just some sample text to test out the api.|text|min: 1 , max: 1000|
 > |lang|ge|text|Language, defaults to 'ge'. Other option is 'en'|
 > 
 
@@ -187,9 +187,9 @@ Contact form route. Sends email to info@slash.ge.
 > > > 
 > > > |Key|Value|Type|Description|
 > > > |---|---|---|---|
-> > > |email|example@example.org|text|min: 1 | max: 50|
-> > > |subject|Test subject line|text|min: 1 | max: 100|
-> > > |text|just some sample text to test out the api.|text|min: 1 | max: 1000|
+> > > |email|example@example.org|text|min: 1 , max: 50|
+> > > |subject|Test subject line|text|min: 1 , max: 100|
+> > > |text|just some sample text to test out the api.|text|min: 1 , max: 1000|
 > > > |lang|ge|text|Language, defaults to 'ge'. Other option is 'en'|
 > > > 
 > > 
@@ -230,9 +230,9 @@ Contact form route. Sends email to info@slash.ge.
 > > > 
 > > > |Key|Value|Type|Description|
 > > > |---|---|---|---|
-> > > |email|example@example.org|text|min: 1 | max: 50|
-> > > |subject|Test subject line|text|min: 1 | max: 100|
-> > > |text|just some sample text to test out the api.|text|min: 1 | max: 1000|
+> > > |email|example@example.org|text|min: 1 , max: 50|
+> > > |subject|Test subject line|text|min: 1 , max: 100|
+> > > |text|just some sample text to test out the api.|text|min: 1 , max: 1000|
 > > > |lang|ge|text|Language, defaults to 'ge'. Other option is 'en'|
 > > > 
 > > 
@@ -282,9 +282,9 @@ Add a portfolio entry.
 > 
 > |Key|Value|Type|Description|
 > |---|---|---|---|
-> |name|Name|text|min: 1 | max: 50|
-> |shortDescription|short|text|min: 10 | max: 200|
-> |longDescription|Test long description. This description has to be long|text|min: 10 | max: 200000|
+> |name|Name|text|min: 1 , max: 50|
+> |shortDescription|short|text|min: 10 , max: 200|
+> |longDescription|Test long description. This description has to be long|text|min: 10 , max: 200000|
 > |logoImage|https://via.placeholder.com/500|text|Link to logo image|
 > |thumbnailImage|https://via.placeholder.com/500|text|Link to thumbnail image|
 > |images[]|https://via.placeholder.com/500|text|Array of links to images|
@@ -319,9 +319,9 @@ Add a portfolio entry.
 > > > 
 > > > |Key|Value|Type|Description|
 > > > |---|---|---|---|
-> > > |name|Test name|text|min: 1 | max: 50|
-> > > |shortDescription|Test short descriptio|text|min: 10 | max: 200|
-> > > |longDescription|Test long description. This description has to be long|text|min: 10 | max: 200000|
+> > > |name|Test name|text|min: 1 , max: 50|
+> > > |shortDescription|Test short descriptio|text|min: 10 , max: 200|
+> > > |longDescription|Test long description. This description has to be long|text|min: 10 , max: 200000|
 > > > |logoImage|https://via.placeholder.com/500|text|Link to logo image|
 > > > |thumbnailImage|https://via.placeholder.com/500|text|Link to thumbnail image|
 > > > |images[]|https://via.placeholder.com/500|text|Array of links to images|
@@ -369,9 +369,9 @@ Add a portfolio entry.
 > > > 
 > > > |Key|Value|Type|Description|
 > > > |---|---|---|---|
-> > > |name|Name|text|min: 1 | max: 50|
-> > > |shortDescription|short|text|min: 10 | max: 200|
-> > > |longDescription|Test long description. This description has to be long|text|min: 10 | max: 200000|
+> > > |name|Name|text|min: 1 , max: 50|
+> > > |shortDescription|short|text|min: 10 , max: 200|
+> > > |longDescription|Test long description. This description has to be long|text|min: 10 , max: 200000|
 > > > |logoImage|https://via.placeholder.com/500|text|Link to logo image|
 > > > |thumbnailImage|https://via.placeholder.com/500|text|Link to thumbnail image|
 > > > |images[]|https://via.placeholder.com/500|text|Array of links to images|
@@ -421,9 +421,9 @@ Add a portfolio entry.
 > > > 
 > > > |Key|Value|Type|Description|
 > > > |---|---|---|---|
-> > > |name|Test name|text|min: 1 | max: 50|
-> > > |shortDescription|Test short descriptio|text|min: 10 | max: 200|
-> > > |longDescription|Test long description. This description has to be long|text|min: 10 | max: 200000|
+> > > |name|Test name|text|min: 1 , max: 50|
+> > > |shortDescription|Test short descriptio|text|min: 10 , max: 200|
+> > > |longDescription|Test long description. This description has to be long|text|min: 10 , max: 200000|
 > > > |logoImage|https://via.placeholder.com/500|text|Link to logo image|
 > > > |thumbnailImage|https://via.placeholder.com/500|text|Link to thumbnail image|
 > > > |images[]|https://via.placeholder.com/500|text|Array of links to images|
