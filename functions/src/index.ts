@@ -46,12 +46,24 @@ api.use(parsingMiddleware);
 // mailer initialization
 // _______________________________
 
+const mailConfig = {
+	host: functions.config().email.host,
+	port: +functions.config().email.port, //typecast to number
+	secure: +functions.config().email.port === 465, // only true if port is 465
+	auth: {
+		user: functions.config().email.auth,
+		pass: functions.config().email.pass
+	}
+};
+
+console.log(mailConfig);
+
 const mailer = new Mailer(
-	functions.config().email.host,
-	+functions.config().email.port,
-	+functions.config().email.portt === 465,
-	functions.config().email.auth,
-	functions.config().email.pass
+	mailConfig.host,
+	+mailConfig.port,
+	+mailConfig.port === 465,
+	mailConfig.auth.user,
+	mailConfig.auth.pass
 );
 
 // database initialization
@@ -110,11 +122,11 @@ api.post("/requestQuote", async (req: any, res: any) => {
 
 	mailer
 		.send(functions.config().email.auth, text, req.body.email + " - Quote")
-		.then((message: any) => {
-			res.send({ status: "success", message: message });
+		.then((response: any) => {
+			res.send({ status: "success", message: localizer("mailSuccess", lang) });
 		})
 		.catch((e: any) => {
-			res.send({ status: "error", errors: [e] });
+			res.send({ status: "error", errors: [localizer("mailFail", lang)] });
 		});
 });
 

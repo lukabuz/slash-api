@@ -14,7 +14,10 @@ const translations = {
 		adminPass: "administrator password",
 		wrongAdminPass: "Wrong administrator password",
 		fileSuccess: "File uploaded.",
-		fileError: "Couldn't upload files."
+		fileError: "Couldn't upload files.",
+		mailSuccess:
+			"The email has been successfully sent, we will get back to you shortly.",
+		mailFail: "The mail could not be sent, please try again."
 	},
 	ge: {
 		email: "მეილი",
@@ -31,7 +34,9 @@ const translations = {
 		adminPass: "ადმინისტრატორის პაროლი",
 		wrongAdminPass: "ადმინისტრატორის პაროლი არასწორია",
 		fileSuccess: "ფაილები წარმატებით აიტვირთა.",
-		fileError: "ფაილების ატვირთვა ვერ მოხერხდა."
+		fileError: "ფაილების ატვირთვა ვერ მოხერხდა.",
+		mailSuccess: "მეილი გაგზავნილია! ჩვენი გუნდი მალე დაგეკონტაქტებათ.",
+		mailFail: "ვერ მოხდა მეილის გაგზავნა, გთხოვთ ცადოთ ხელახლა."
 	}
 };
 

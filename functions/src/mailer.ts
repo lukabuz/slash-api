@@ -40,12 +40,10 @@ export default class Mailer {
 					html: body // html email
 				})
 				.then((res: any) => {
-					console.log(res);
-					resolve("მეილი გაგზავნილია! ჩვენი გუნდი მალე დაგეკონტაქტებათ.");
+					resolve(res);
 				})
 				.catch((e: any) => {
-					console.log(e);
-					reject("ვერ მოხდა მეილის გაგზავნა, გთხოვთ ცადოთ ხელახლა");
+					reject(e);
 				});
 		});
 	}
