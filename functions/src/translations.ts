@@ -1,0 +1,38 @@
+const translations = {
+	en: {
+		email: "email",
+		text: "main text",
+		siteType: "website type",
+		companyName: "company name",
+		subject: "subject",
+		name: "name",
+		longDescription: "long description",
+		shortDescription: "short description",
+		logoImage: "logo image",
+		thumbnailImage: "thumbnail image",
+		images: "images",
+		adminPass: "administrator password",
+		wrongAdminPass: "Wrong administrator password",
+		fileSuccess: "File uploaded.",
+		fileError: "Couldn't upload files."
+	},
+	ge: {
+		email: "მეილი",
+		text: "მთავარი ტექსტი",
+		siteType: "საიტის ტიპი",
+		companyName: "კომპანიის სახელი",
+		subject: "სათაური",
+		name: "სახელი",
+		longDescription: "ვრცელი აღწერა",
+		shortDescription: "მოკლე აღწერა",
+		logoImage: "ლოგოს სურათი",
+		thumbnailImage: "პატარა სურათი",
+		images: "სურათები",
+		adminPass: "ადმინისტრატორის პაროლი",
+		wrongAdminPass: "ადმინისტრატორის პაროლი არასწორია",
+		fileSuccess: "ფაილები წარმატებით აიტვირთა.",
+		fileError: "ფაილების ატვირთვა ვერ მოხერხდა."
+	}
+};
+
+export default translations;

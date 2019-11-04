@@ -6,41 +6,10 @@ import * as parser from "body-parser";
 import { Validator } from "./validator";
 import Data from "./data";
 import Mailer from "./mailer";
+import translations from "./translations";
 
 const localizer = (str: string, lang = "ge"): string => {
-	const language = lang === "ge" ? "ge" : "en";
-	const translations = {
-		en: {
-			email: "email",
-			text: "main text",
-			siteType: "website type",
-			companyName: "company name",
-			subject: "subject",
-			name: "name",
-			longDescription: "long description",
-			shortDescription: "short description",
-			logoImage: "logo image",
-			thumbnailImage: "thumbnail image",
-			images: "images",
-			adminPass: "administrator password"
-		},
-		ge: {
-			email: "მეილი",
-			text: "მთავარი ტექსტი",
-			siteType: "საიტის ტიპი",
-			companyName: "კომპანიის სახელი",
-			subject: "სათაური",
-			name: "სახელი",
-			longDescription: "ვრცელი აღწერა",
-			shortDescription: "მოკლე აღწერა",
-			logoImage: "ლოგოს სურათი",
-			thumbnailImage: "პატარა სურათი",
-			images: "სურათები",
-			adminPass: "ადმინისტრატორის პაროლი"
-		}
-	};
-
-	return translations[language][str];
+	return translations[lang === "en" ? "en" : "ge"][str];
 };
 
 // middleware initialization
@@ -261,7 +230,7 @@ api.post("/createPortfolioItem", async (req: any, res: any) => {
 	}
 
 	if (req.body.adminPass !== functions.config().email.auth) {
-		res.json({ status: "error", errors: ["wrong administrator password"] });
+		res.json({ status: "error", errors: [localizer("", lang)] });
 		return;
 	}
 
