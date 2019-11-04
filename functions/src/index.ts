@@ -3,9 +3,9 @@ import * as admin from "firebase-admin";
 import * as express from "express";
 import * as cors from "cors";
 import * as parser from "body-parser";
-import * as nodemailer from "nodemailer";
 import { Validator } from "./validator";
 import Data from "./data";
+import Mailer from "./mailer";
 
 const localizer = (str: string, lang = "ge"): string => {
 	const language = lang === "ge" ? "ge" : "en";
@@ -64,57 +64,6 @@ const parsingMiddleware = (req: any, res: any, next: any) => {
 	next();
 };
 
-// mailer class definition
-// _______________________________
-class Mailer {
-	private transporter: any; // nodemailer transporter object
-	private user: string; // username(example@example.org) of sending account
-
-	// constructor, requires mail account info from config
-	constructor(
-		host: string,
-		port: number,
-		secure: boolean,
-		user: string,
-		pass: string
-	) {
-		this.user = user;
-
-		this.transporter = nodemailer.createTransport({
-			// create transporter and save it
-			host: host,
-			port: port,
-			secure: secure,
-			auth: {
-				user: user,
-				pass: pass
-			}
-		});
-	}
-
-	// sending function. resolves or rejects with a string return value
-	async send(to: string, body: string, subject: string) {
-		return new Promise((resolve: any, reject: any) => {
-			this.transporter
-				.sendMail({
-					from: '"Slash" <' + this.user + ">", // from
-					to: to, // to
-					subject: subject, // subject
-					text: body, // plaintext email
-					html: body // html email
-				})
-				.then((res: any) => {
-					console.log(res);
-					resolve("მეილი გაგზავნილია! ჩვენი გუნდი მალე დაგეკონტაქტებათ.");
-				})
-				.catch((e: any) => {
-					console.log(e);
-					reject("ვერ მოხდა მეილის გაგზავნა, გთხოვთ ცადოთ ხელახლა");
-				});
-		});
-	}
-}
-
 // express initialization
 // _______________________________
 
@@ -128,22 +77,12 @@ api.use(parsingMiddleware);
 // mailer initialization
 // _______________________________
 
-const mailConfig = {
-	host: functions.config().email.host,
-	port: +functions.config().email.port, //typecast to number
-	secure: +functions.config().email.port === 465, // only true if port is 465
-	auth: {
-		user: functions.config().email.auth,
-		pass: functions.config().email.pass
-	}
-};
-
 const mailer = new Mailer(
-	mailConfig.host,
-	+mailConfig.port,
-	+mailConfig.port === 465,
-	mailConfig.auth.user,
-	mailConfig.auth.pass
+	functions.config().email.host,
+	+functions.config().email.port,
+	+functions.config().email.portt === 465,
+	functions.config().email.auth,
+	functions.config().email.pass
 );
 
 // database initialization
