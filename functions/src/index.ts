@@ -119,58 +119,6 @@ api.post("/requestQuote", async (req: any, res: any) => {
 });
 
 // route for handling the contact form
-api.post("/contact", async (req: any, res: any) => {
-	const lang = req.body.lang === "en" ? "en" : "ge";
-	// initialize validator with the proper configs
-	const validator = new Validator(
-		[
-			{
-				variableName: "email",
-				displayName: localizer("email", lang),
-				minLength: 1,
-				maxLength: 50
-			},
-			{
-				variableName: "text",
-				displayName: localizer("text", lang),
-				minLength: 10,
-				maxLength: 1000
-			},
-			{
-				variableName: "subject",
-				displayName: localizer("subject", lang),
-				minLength: 1,
-				maxLength: 100
-			}
-		],
-		req,
-		lang
-	);
-
-	// handle validation errors
-	if (!validator.validate()) {
-		res.json({ status: "error", errors: validator.errors });
-		return;
-	}
-
-	// prepare payload and send email
-	const text = "From: " + req.body.email + "\n" + req.body.text;
-
-	mailer
-		.send(
-			functions.config().email.auth,
-			text,
-			`${req.body.email} - ${req.body.subject}`
-		)
-		.then((message: any) => {
-			res.send({ status: "success", message: message });
-		})
-		.catch((e: any) => {
-			res.send({ status: "error", errors: [e] });
-		});
-});
-
-// route for handling the contact form
 api.post("/createPortfolioItem", async (req: any, res: any) => {
 	const lang = req.body.lang === "en" ? "en" : "ge";
 	// initialize validator with the proper configs
