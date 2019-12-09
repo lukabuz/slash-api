@@ -33,7 +33,7 @@ export default class Mailer {
 		return new Promise((resolve: any, reject: any) => {
 			this.transporter
 				.sendMail({
-					from: '"Slash" <' + this.user + ">", // from
+					from: this.user, // from
 					to: to, // to
 					subject: subject, // subject
 					text: body, // plaintext email

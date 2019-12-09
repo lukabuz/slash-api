@@ -56,8 +56,6 @@ const mailConfig = {
 	}
 };
 
-console.log(mailConfig);
-
 const mailer = new Mailer(
 	mailConfig.host,
 	+mailConfig.port,
@@ -119,11 +117,16 @@ api.post("/requestQuote", async (req: any, res: any) => {
 
 	// prepare payload and send email
 	const text = `From: ${req.body.email} --- Site Type: ${req.body.siteType} --- Company: ${req.body.companyName} --- Site Description ${req.body.text}`;
+	const userMailText = localizer('mailHello', lang) + ' ' + req.body.companyName + ',<br><br>' + localizer('mailRecieved', lang);
 
 	mailer
 		.send(functions.config().email.auth, text, req.body.email + " - Quote")
 		.then((response: any) => {
-			res.send({ status: "success", message: localizer("mailSuccess", lang) });
+			mailer.send(req.body.email, userMailText, localizer('mailSubject', lang)).then((secondResponse: any) => {
+				res.send({ status: "success", message: localizer("mailSuccess", lang) });
+			}).catch((e: any) => {
+				res.send({ status: "error", errors: [localizer("mailFail", lang)] });
+			});
 		})
 		.catch((e: any) => {
 			res.send({ status: "error", errors: [localizer("mailFail", lang)] });

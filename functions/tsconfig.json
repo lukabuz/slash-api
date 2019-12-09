@@ -8,8 +8,11 @@
 		"strict": true,
 		"target": "es2017",
 		"resolveJsonModule": true,
-		"noImplicitAny": false
+		"noImplicitAny": false,
+		"moduleResolution": "node"
 	},
 	"compileOnSave": true,
-	"include": ["src"]
+	"include": [
+		"src"
+	]
 }

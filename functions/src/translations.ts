@@ -17,7 +17,10 @@ const translations = {
 		fileError: "Couldn't upload files.",
 		mailSuccess:
 			"The email has been successfully sent, we will get back to you shortly.",
-		mailFail: "The mail could not be sent, please try again."
+		mailFail: "The mail could not be sent, please try again.",
+		mailHello: 'Hello',
+		mailRecieved: 'We have recieved your email and will be in contact with you as soon as possible. <br><br>Best regards, the Slash Team',
+		mailSubject: 'Slash Confirmation'
 	},
 	ge: {
 		email: "მეილი",
@@ -36,7 +39,10 @@ const translations = {
 		fileSuccess: "ფაილები წარმატებით აიტვირთა.",
 		fileError: "ფაილების ატვირთვა ვერ მოხერხდა.",
 		mailSuccess: "მეილი გაგზავნილია! ჩვენი გუნდი მალე დაგეკონტაქტებათ.",
-		mailFail: "ვერ მოხდა მეილის გაგზავნა, გთხოვთ ცადოთ ხელახლა."
+		mailFail: "ვერ მოხდა მეილის გაგზავნა, გთხოვთ ცადოთ ხელახლა.",
+		mailHello: 'მოგესალმებით',
+		mailRecieved: 'ჩვენ მივიღეთ თქვენი შეტყობინება. ვეცდებით რაც შეიძლება მოკლე დროში დაგიკავშირდეთ. <br><br>პატივისცემით, სლეშის გუნდი.',
+		mailSubject: 'დასტური სლეშისგან'
 	}
 };
 
