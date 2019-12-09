@@ -19,7 +19,7 @@ const translations = {
 			"The email has been successfully sent, we will get back to you shortly.",
 		mailFail: "The mail could not be sent, please try again.",
 		mailHello: 'Hello',
-		mailRecieved: 'We have recieved your email and will be in contact with you as soon as possible. <br><br>Best regards, the Slash Team',
+		mailRecieved: 'We have recieved your email and will be in contact with you as soon as possible. <br><br>Best regards,<br> the Slash Team',
 		mailSubject: 'Slash Confirmation'
 	},
 	ge: {
@@ -41,7 +41,7 @@ const translations = {
 		mailSuccess: "მეილი გაგზავნილია! ჩვენი გუნდი მალე დაგეკონტაქტებათ.",
 		mailFail: "ვერ მოხდა მეილის გაგზავნა, გთხოვთ ცადოთ ხელახლა.",
 		mailHello: 'მოგესალმებით',
-		mailRecieved: 'ჩვენ მივიღეთ თქვენი შეტყობინება. ვეცდებით რაც შეიძლება მოკლე დროში დაგიკავშირდეთ. <br><br>პატივისცემით, სლეშის გუნდი.',
+		mailRecieved: 'ჩვენ მივიღეთ თქვენი შეტყობინება. ვეცდებით რაც შეიძლება მოკლე დროში დაგიკავშირდეთ. <br><br>პატივისცემით,<br> სლეშის გუნდი.',
 		mailSubject: 'დასტური სლეშისგან'
 	}
 };

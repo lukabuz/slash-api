@@ -6,6 +6,7 @@ import * as parser from "body-parser";
 import { Validator } from "./validator";
 import Data from "./data";
 import Mailer from "./mailer";
+import DiscordNotifier from "./discordNotifier";
 import translations from "./translations";
 
 const localizer = (str: string, lang = "ge"): string => {
@@ -63,6 +64,11 @@ const mailer = new Mailer(
 	mailConfig.auth.user,
 	mailConfig.auth.pass
 );
+
+// Discord Notifier Initialization
+// _______________________________
+
+const discord = new DiscordNotifier(functions.config().discord.webhook);
 
 // database initialization
 // _______________________________
@@ -123,6 +129,9 @@ api.post("/requestQuote", async (req: any, res: any) => {
 		.send(functions.config().email.auth, text, req.body.email + " - Quote")
 		.then((response: any) => {
 			mailer.send(req.body.email, userMailText, localizer('mailSubject', lang)).then((secondResponse: any) => {
+				try {
+					discord.send(req.body.email, req.body.siteType, req.body.companyName, req.body.text);
+				} catch (e) { console.log(e) }
 				res.send({ status: "success", message: localizer("mailSuccess", lang) });
 			}).catch((e: any) => {
 				res.send({ status: "error", errors: [localizer("mailFail", lang)] });
